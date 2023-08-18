@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "771533825399",
+    "project_id": "chimki-d508a",
+    "storage_bucket": "chimki-d508a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:771533825399:android:5e7d6b6d76b6b47e952d72",
+        "android_client_info": {
+          "package_name": "com.vanka.chimki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "771533825399-g1l4aht9062iu5tlvogviqjugc756bgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDki7bp4GtUYMGnZNwLMHjyQJCf0zfECtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771533825399-g1l4aht9062iu5tlvogviqjugc756bgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
