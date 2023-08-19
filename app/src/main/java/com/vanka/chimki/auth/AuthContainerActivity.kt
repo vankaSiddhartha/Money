@@ -13,6 +13,7 @@ class AuthContainerActivity : AppCompatActivity() {
     private lateinit var binding:ActivityChooseAuthBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         binding = ActivityChooseAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val window: Window = window

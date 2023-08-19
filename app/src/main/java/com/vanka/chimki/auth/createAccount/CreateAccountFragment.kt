@@ -39,30 +39,35 @@ class CreateAccountFragment : Fragment() {
             intentFragment(R.id.authFrame,ChooseAuthFragment(),requireContext())
         }
         binding.passwordCaEt.setOnClickListener {
+            // Save the current cursor position
+            val cursorPosition = binding.passwordCaEt.selectionEnd
+
             // Get the current drawables (start, top, end, and bottom)
             val drawables = binding.passwordCaEt.compoundDrawablesRelative
+
             // Create a new drawable for the end position
             val openEye = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_remove_red_eye_24)
-            // Set the new drawable as the end drawable
-            val closeEye =  ContextCompat.getDrawable(requireContext(),
-                R.drawable.baseline_visibility_off_24
-            )
+            val closeEye = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_visibility_off_24)
 
-            if (binding.passwordCaEt.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())){
-                //if password is visible
+            if (binding.passwordCaEt.transformationMethod == HideReturnsTransformationMethod.getInstance()) {
+                // If password is visible
                 binding.passwordCaEt.transformationMethod = PasswordTransformationMethod.getInstance()
-                binding.passwordCaEt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1],closeEye, drawables[3])
-            }else{
+                binding.passwordCaEt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1], closeEye, drawables[3])
+            } else {
                 binding.passwordCaEt.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 binding.passwordCaEt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1], openEye, drawables[3])
             }
+
+            // Restore the cursor position after the transformation
+            binding.passwordCaEt.setSelection(cursorPosition)
         }
+
         return binding.root
     }
 
     private fun checkNullValuesInET(email: String, password: String) {
         if (email.isNotEmpty()&&password.isNotEmpty()){
-            createAccountViewModel.createAccount(email,password,requireContext(),R.id.authFrame,ChooseAuthFragment())
+            createAccountViewModel.createAccount(email,password,requireContext(),R.id.authFrame,UploadName())
         }else{
             Toast.makeText(requireContext(), "Error!!", Toast.LENGTH_SHORT).show()
         }
