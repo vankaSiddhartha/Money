@@ -1,17 +1,18 @@
 package com.vanka.chimki.auth.createAccount
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.FirebaseApp
 import com.vanka.chimki.R
 import com.vanka.chimki.ReaptedCode.FragmentIntent.intentFragment
-import com.vanka.chimki.ReaptedCode.Loading.dismissDialogForLoading
-import com.vanka.chimki.ReaptedCode.Loading.showAlertDialogForLoading
 import com.vanka.chimki.databinding.FragmentCreateAccountBinding
 
 
@@ -23,38 +24,50 @@ class CreateAccountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         FirebaseApp.initializeApp(requireContext())
         binding = FragmentCreateAccountBinding.inflate(inflater, container, false)
         createAccountViewModel = ViewModelProvider(this)[CreateAccountViewModel::class.java]
 
         // Inflate the layout for this fragment
         // Observe the loading state to show/hide loading indicator
-        createAccountViewModel.loadingState.observe(requireActivity()) { isLoading ->
-            if (isLoading) {
-                dismissDialogForLoading()
-                intentFragment(R.id.authFrame,ChooseAuthFragment(),requireContext())
-            } else {
-                showAlertDialogForLoading(requireContext())
-            }
-        }
-
         binding.nextBtn.setOnClickListener {
-            val email = binding.emailCaTv.text.toString()
-            val password = binding.passwordCaEt.text.toString()
+            checkNullValuesInET(binding.emailCaTv.text.toString().trim(),binding.passwordCaEt.text.toString().trim())
+        }
+        //changing fragment - click on back btn
+        binding.backBtn.setOnClickListener {
+            intentFragment(R.id.authFrame,ChooseAuthFragment(),requireContext())
+        }
+        binding.passwordCaEt.setOnClickListener {
+            // Get the current drawables (start, top, end, and bottom)
+            val drawables = binding.passwordCaEt.compoundDrawablesRelative
+            // Create a new drawable for the end position
+            val openEye = ContextCompat.getDrawable(requireContext(), R.drawable.baseline_remove_red_eye_24)
+            // Set the new drawable as the end drawable
+            val closeEye =  ContextCompat.getDrawable(requireContext(),
+                R.drawable.baseline_visibility_off_24
+            )
 
-           checkNullValuesInET(email,password)
+            if (binding.passwordCaEt.transformationMethod.equals(HideReturnsTransformationMethod.getInstance())){
+                //if password is visible
+                binding.passwordCaEt.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.passwordCaEt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1],closeEye, drawables[3])
+            }else{
+                binding.passwordCaEt.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.passwordCaEt.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1], openEye, drawables[3])
+            }
         }
         return binding.root
     }
 
     private fun checkNullValuesInET(email: String, password: String) {
-        showAlertDialogForLoading(requireContext())
         if (email.isNotEmpty()&&password.isNotEmpty()){
-            createAccountViewModel.createAccount(email,password)
+            createAccountViewModel.createAccount(email,password,requireContext(),R.id.authFrame,ChooseAuthFragment())
         }else{
             Toast.makeText(requireContext(), "Error!!", Toast.LENGTH_SHORT).show()
         }
     }
+
 
 
 
